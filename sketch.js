@@ -42,13 +42,16 @@ function draw() {
 }
 
 function prePressed() {
-    txt = tree.preOrder();
+    txt = "preorder: ";
+    txt += tree.preOrder();
 }
 function postPressed() {
-    txt = tree.postOrder();
+    txt = "postorder: ";
+    txt += tree.postOrder();
 }
 function inPressed() {
-    txt = tree.inOrder();
+    txt = "inorder: ";
+    txt += tree.inOrder();
 }
 
 function hidePressed() {
