@@ -8,9 +8,20 @@ var buttonBogo;
 
 var txt;
 
+function setup() {var tree;
+var buttonPre;
+var buttonPost;
+var buttonIn;
+var buttonHide;
+var buttonRegen;
+var buttonBogo;
+var txt;
+var slider;
+var v;
+
 function setup() {
-    createCanvas(900,500);
-    tree = genRandom(4);
+    createCanvas(900,600);
+    tree = genRandom(5);
     txt = "";
     
     buttonPre = createButton('Preorder');
@@ -33,17 +44,26 @@ function setup() {
     buttonIn.position(width - 100, 65 + 80);
     buttonIn.mousePressed(regenPressed);
     
+    slider = createSlider(1, 5, 100);
+    slider.position(20, 20);
+    
+    
     buttonBogo = createButton('Bogoorder');
     buttonBogo.position(width - 100, 65 + 100);
     buttonBogo.mousePressed(bogoPressed);
-    
+    v = slider.value();
 }
 
 function draw() {
     background(51, 51, 65);
     drawTree(tree, width/2, 100,1);
     
- 
+    
+    
+    if(slider.value() != v) {
+        regenPressed();
+        v = slider.value();
+    }
     
     fill(255);
     text(txt,width/2, height - 40);
@@ -69,26 +89,41 @@ function hidePressed() {
 
 function regenPressed() {
     hidePressed();
-    tree = genRandom(4);
+    tree = genRandom(slider.value());
 }
 
 function drawTree(tree, x, y, i) {
     
     stroke(245);
     strokeWeight(2);
-    var sp = 200 / i ;
+
+    var sp = 30 / (0.5 * i)
+    var sp3;
+    switch (i) {
+        case 1 :
+            sp3 = 60;
+            break;
+        case 2:
+            sp3 = 30;
+            break;
+        case 3:
+            sp3 = 10;
+            break;
+        default:
+            sp3 = 0;
+    }
     
     
     if(!tree.getLeftTree().isEmpty()) {
         
-        line(x,y,x-sp,y+100);
+        line(x,y,x-sp-sp3,y+100);
     }
     if(!tree.getRightTree().isEmpty()) {
-        line(x,y,x+sp,y+100);
+        line(x,y,x+sp+sp3,y+100);
     }
     
     fill(255);
-    ellipse(x, y, 50, 50);
+    ellipse(x, y, 25, 25);
     
     fill(0);
     textSize(23);
@@ -96,11 +131,11 @@ function drawTree(tree, x, y, i) {
     text(tree.getLabel(),x,y+8);
     
     if(!tree.getLeftTree().isEmpty()) {
-        drawTree(tree.getLeftTree(),x-sp,y+100,i+1);
+        drawTree(tree.getLeftTree(),x-sp-sp3,y+100,i+1);
     }
     
     if(!tree.getRightTree().isEmpty()) {
-        drawTree(tree.getRightTree(),x+sp,y+100,i+1);
+        drawTree(tree.getRightTree(),x+sp+sp3,y+100,i+1);
     }
     
     
@@ -175,17 +210,22 @@ function genRandom(i) {
     return gr(i, u);
     
     function gr(i, used) {
-        var label = "";
-        do {
-            label = randomString();
-        } while (used.has(label));
-
-        used.add(label);
         
-        return i < 1
-            ? new BinTree(null,null,null) 
-            : new BinTree(
-            gr(i - 1, used), label, gr(i - 1, used));
+        
+        if (i > 0) {
+            
+            var label = "";
+            do {
+                label = randomString();
+            } while (used.has(label));
+
+            used.add(label);
+        
+        return new BinTree(gr(i - 1, used), label, gr(i - 1, used));
+        } else {
+            return new BinTree(null, null, null);
+        }
+        
     }
     
     function randomString() {
