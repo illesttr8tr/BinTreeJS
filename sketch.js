@@ -5,16 +5,6 @@ var buttonIn;
 var buttonHide;
 var buttonRegen;
 var buttonBogo;
-
-var txt;
-
-function setup() {var tree;
-var buttonPre;
-var buttonPost;
-var buttonIn;
-var buttonHide;
-var buttonRegen;
-var buttonBogo;
 var txt;
 var slider;
 var v;
