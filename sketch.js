@@ -4,6 +4,7 @@ var buttonPost;
 var buttonIn;
 var buttonHide;
 var buttonRegen;
+var buttonBogo;
 
 var txt;
 
@@ -11,47 +12,55 @@ function setup() {
     createCanvas(900,500);
     tree = genRandom(4);
     txt = "";
-}
-
-function draw() {
-    background(51, 51, 65);
-    drawTree(tree, width/2, 100,1);
     
     buttonPre = createButton('Preorder');
     buttonPre.position(width - 100, 65);
     buttonPre.mousePressed(prePressed);
     
     buttonPost = createButton('Postorder');
-    buttonPost.position(width - 100, 65 + 40);
+    buttonPost.position(width - 100, 65 + 20);
     buttonPost.mousePressed(postPressed);
     
     buttonIn = createButton('Inorder');
-    buttonIn.position(width - 100, 65 + 80);
+    buttonIn.position(width - 100, 65 + 40);
     buttonIn.mousePressed(inPressed);
     
     buttonIn = createButton('Verstecken');
-    buttonIn.position(width - 100, 65 + 120);
+    buttonIn.position(width - 100, 65 + 60);
     buttonIn.mousePressed(hidePressed);
     
     buttonIn = createButton('Neu');
-    buttonIn.position(width - 100, 65 + 160);
+    buttonIn.position(width - 100, 65 + 80);
     buttonIn.mousePressed(regenPressed);
+    
+    buttonBogo = createButton('Bogoorder');
+    buttonBogo.position(width - 100, 65 + 100);
+    buttonBogo.mousePressed(bogoPressed);
+    
+}
+
+function draw() {
+    background(51, 51, 65);
+    drawTree(tree, width/2, 100,1);
+    
+ 
     
     fill(255);
     text(txt,width/2, height - 40);
 }
 
 function prePressed() {
-    txt = "preorder: ";
-    txt += tree.preOrder();
+    txt = tree.preOrder();
 }
 function postPressed() {
-    txt = "postorder: ";
-    txt += tree.postOrder();
+    txt = tree.postOrder();
 }
 function inPressed() {
-    txt = "inorder: ";
-    txt += tree.inOrder();
+    txt = tree.inOrder();
+}
+
+function bogoPressed() {
+    txt = tree.bogoOrder(0);
 }
 
 function hidePressed() {
@@ -149,6 +158,14 @@ function BinTree(left, label, right) {
         return this.isEmpty()
             ? ""
             : this.left.inOrder() + this.label + " " + this.right.inOrder();
+    }
+    
+    this.bogoOrder = function(i) {
+        return this.isEmpty()
+            ? ""
+            : i % 2 == 0
+                ?   " " + this.label + this.left.bogoOrder(i+1) + this.right.bogoOrder(i+1)
+                :   this.left.bogoOrder(i+1) + this.right.bogoOrder(i+1) + " " +this.label;
     }
     
 }
