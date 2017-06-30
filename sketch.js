@@ -4,7 +4,6 @@ var buttonPost;
 var buttonIn;
 var buttonHide;
 var buttonRegen;
-var buttonBogo;
 var txt;
 var slider;
 var v;
@@ -36,11 +35,7 @@ function setup() {
     
     slider = createSlider(1, 5, 100);
     slider.position(20, 20);
-    
-    
-    buttonBogo = createButton('Bogoorder');
-    buttonBogo.position(width - 100, 65 + 100);
-    buttonBogo.mousePressed(bogoPressed);
+
     v = slider.value();
 }
 
@@ -67,10 +62,6 @@ function postPressed() {
 }
 function inPressed() {
     txt = tree.inOrder();
-}
-
-function bogoPressed() {
-    txt = tree.bogoOrder(0);
 }
 
 function hidePressed() {
@@ -185,12 +176,12 @@ function BinTree(left, label, right) {
             : this.left.inOrder() + this.label + " " + this.right.inOrder();
     }
     
-    this.bogoOrder = function(i) {
+    this.funOrder = function(i) {
         return this.isEmpty()
             ? ""
             : i % 2 == 0
-                ?   " " + this.label + this.left.bogoOrder(i+1) + this.right.bogoOrder(i+1)
-                :   this.left.bogoOrder(i+1) + this.right.bogoOrder(i+1) + " " +this.label;
+                ?   " " + this.label + this.left.funOrder(i+1) + this.right.funOrder(i+1)
+                :   this.left.funOrder(i+1) + this.right.funOrder(i+1) + " " +this.label;
     }
     
 }
